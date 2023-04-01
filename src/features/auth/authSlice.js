@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 // Set initial state
 const initialState = {
-    connected: false,
+    signed: false,
     token: null,
 }
 
@@ -13,7 +13,7 @@ export const authSlice = createSlice({
     reducers: {
         signin: (draft, action) => {
             const token = action.payload;
-            draft.connected = true;
+            draft.signed = true;
             draft.token = token;
             return
         },
@@ -23,6 +23,6 @@ export const authSlice = createSlice({
     },
 })
 
-export const { signin, discosignoutnnect } = authSlice.actions
+export const { signin, signout } = authSlice.actions
 
 export default authSlice.reducer
