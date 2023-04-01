@@ -1,19 +1,59 @@
 // Import modules
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+
+// Import Redux slices
+//import * as authenticatedActions from '../../features/auth/authenticatedSlice'
+import * as authActions from '../../features/auth/authSlice'
+
+// Import Redux selectors
+import { selectAuth } from '../../utils/selectors'
 
 // Import css module
 import styles from './signin.module.css'
 
 
 function Signin() {
+    // Create useDispath instance
+    const dispatch = useDispatch();
+
+    const auth = useSelector(selectAuth);
+    console.log(auth);
+
+    // Local state to save form inputs
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [remember, setRemember] = useState(false);
 
+    // Save token to local storage (todo : set expiration)
+    function setLocalStorage(token) {
+        localStorage.setItem("token", token);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(` Email: ${email}, Password: ${password}`)
+        axios.post('http://localhost:3001/api/v1/user/login', {
+            email: email,
+            password: password
+        })
+            .then(function (response) {
+                if (remember) {
+                    setLocalStorage(response.data.body.token);
+                    dispatch(authActions.signin(response.data.body.token));
+                }
+                else {
+                    console.log(response.data.body.token);
+                    dispatch(authActions.signin(response.data.body.token));
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
     }
+
+
 
     return (
         <>
@@ -41,7 +81,10 @@ function Signin() {
                             />
                         </div>
                         <div className={styles["input-remember"]}>
-                            <input type="checkbox" id="remember-me" />
+                            <input
+                                type="checkbox"
+                                id="remember-me"
+                                onChange={(e) => setRemember(!remember)} />
                             <label htmlFor="remember-me">Remember me</label>
                         </div>
 
