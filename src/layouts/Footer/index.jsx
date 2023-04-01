@@ -6,7 +6,9 @@ function Footer() {
 
     return (
         <>
-            <footer>Footer</footer>
+            <footer>
+                <p className={styles["footer-text"]}>Copyright 2020 Argent Bank</p>
+            </footer>
         </>
     )
 
