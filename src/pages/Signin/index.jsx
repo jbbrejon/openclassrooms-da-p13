@@ -1,6 +1,7 @@
 // Import modules
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 // Import Redux slices
@@ -17,6 +18,9 @@ import styles from './signin.module.css'
 function Signin() {
     // Create useDispath instance
     const dispatch = useDispatch();
+
+    // Create useNavigate instance
+    const navigate = useNavigate();
 
     const auth = useSelector(selectAuth);
     console.log(auth);
@@ -41,10 +45,11 @@ function Signin() {
                 if (remember) {
                     setLocalStorage(response.data.body.token);
                     dispatch(authActions.signin(response.data.body.token));
+                    navigate("/profile");
                 }
                 else {
-                    console.log(response.data.body.token);
                     dispatch(authActions.signin(response.data.body.token));
+                    navigate("/profile");
                 }
             })
             .catch(function (error) {
