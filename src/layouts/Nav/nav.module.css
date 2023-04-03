@@ -15,6 +15,9 @@
 }
 
 .main-nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-decoration: none;
     margin-right: 0.5rem;
 }
@@ -35,4 +38,8 @@
 
 i {
     margin-right: 5px;
+}
+
+.firstname {
+    margin-right: 15px;
 }
