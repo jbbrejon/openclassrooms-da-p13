@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import Redux selectors
-import { selectAuth } from '../../utils/selectors'
+import { selectAuth, selectProfile } from '../../utils/selectors'
 
 // Import Redux slices
 import * as authActions from '../../features/auth/authSlice'
+import * as profileActions from '../../features/profile/profileSlice'
 
 // Import site logo
 import logo from '../../assets/argentBankLogo.png'
@@ -21,7 +22,8 @@ function Nav() {
 
     // Get auth state
     const auth = useSelector(selectAuth);
-
+    // Get profile state
+    const profile = useSelector(selectProfile);
 
     // Sign out actions
     const handleClick = () => {
@@ -29,6 +31,7 @@ function Nav() {
         window.localStorage.removeItem('token');
         // Reset auth state
         dispatch(authActions.signout());
+        dispatch(profileActions.reset());
     }
 
     return (
@@ -45,6 +48,8 @@ function Nav() {
 
                 <div> {auth.signed ?
                     <NavLink className={styles["main-nav-item"]} onClick={handleClick} to="/" >
+                        <i className="fa fa-user-circle"></i>
+                        <div className={styles.firstname}>{profile.firstName}</div>
                         <i className="fa fa-sign-out" ></i>
                         Sign Out
                     </NavLink>
