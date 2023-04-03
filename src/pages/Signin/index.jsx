@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 
 // Import Redux slices
 import * as authActions from '../../features/auth/authSlice'
@@ -11,10 +10,12 @@ import * as profileActions from '../../features/profile/profileSlice'
 // Import Redux selectors
 import { selectAuth } from '../../utils/selectors'
 
-
 // Import css module
 import styles from './signin.module.css'
 
+// Import API call
+import apiLogin from '../../utils/apiLogin';
+import { apiProfile } from '../../utils/apiProfile';
 
 function Signin() {
     // Create useDispath instance
@@ -22,8 +23,6 @@ function Signin() {
 
     // Create useNavigate instance
     const navigate = useNavigate();
-
-    const auth = useSelector(selectAuth);
 
     // Local state to save form inputs
     const [email, setEmail] = useState("");
@@ -35,48 +34,18 @@ function Signin() {
         localStorage.setItem("token", token);
     }
 
-    // Get firstName and lastName from API
-    function getName(token) {
-        axios.post('http://localhost:3001/api/v1/user/profile', "none", {
-            headers: {
-                'authorization': `Bearer ${token}`
-            },
-        })
-            .then(function (response) {
-                dispatch(profileActions.update({ firstName: response.data.body.firstName, lastName: response.data.body.lastName }));
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3001/api/v1/user/login', {
-            email: email,
-            password: password
-        })
-            .then(function (response) {
-                if (remember) {
-                    setLocalStorage(response.data.body.token);
-                    dispatch(authActions.signin(response.data.body.token));
-                    getName(response.data.body.token);
-                    navigate("/profile");
-                }
-                else {
-                    dispatch(authActions.signin(response.data.body.token));
-                    navigate("/profile");
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
+        async function getData() {
+            let responseLogin = await apiLogin(email, password)
+            dispatch(authActions.signin(responseLogin.data.body.token));
+            let responseProfile = await apiProfile(responseLogin.data.body.token)
+            dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
+            if (remember) setLocalStorage(responseLogin.data.body.token);
+            navigate("/profile");
+        }
+        getData()
     }
-
-
 
     return (
         <>
