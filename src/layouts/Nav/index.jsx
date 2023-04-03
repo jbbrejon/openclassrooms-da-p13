@@ -1,5 +1,5 @@
 // Import modules
-import { NavLink } from 'react-router-dom'
+import { NavLink, Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import Redux selectors
@@ -15,15 +15,38 @@ import logo from '../../assets/argentBankLogo.png'
 // Import css module
 import styles from './nav.module.css'
 
+// Import API call
+import { apiProfile } from '../../utils/apiProfile';
+
+
 
 function Nav() {
+
     // Create useDispath instance
     const dispatch = useDispatch();
 
     // Get auth state
     const auth = useSelector(selectAuth);
+
     // Get profile state
     const profile = useSelector(selectProfile);
+
+    // Get localstorage key
+    let storageToken = localStorage.getItem("token");
+
+    // Get profile info if token in localStorage
+    async function checkStorage() {
+        if (storageToken != null) {
+            let responseProfile = await apiProfile(storageToken)
+            dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
+            dispatch(authActions.signin(storageToken));
+        }
+    }
+    checkStorage()
+
+
+
+
 
     // Sign out actions
     const handleClick = () => {
@@ -32,6 +55,7 @@ function Nav() {
         // Reset auth state
         dispatch(authActions.signout());
         dispatch(profileActions.reset());
+
     }
 
     return (
@@ -46,13 +70,16 @@ function Nav() {
                     <h1 className="sr-only">Argent Bank</h1>
                 </NavLink>
 
-                <div> {auth.signed ?
-                    <NavLink className={styles["main-nav-item"]} onClick={handleClick} to="/" >
-                        <i className="fa fa-user-circle"></i>
-                        <div className={styles.firstname}>{profile.firstName}</div>
-                        <i className="fa fa-sign-out" ></i>
-                        Sign Out
-                    </NavLink>
+                <div className={styles.navlinks}> {auth.signed ?
+                    <>
+                        <NavLink className={styles["main-nav-item"]} to="/profile" >
+                            <i className="fa fa-user-circle"></i>
+                            <div className={styles.firstname}>{profile.firstName}</div>
+                        </NavLink>
+                        <NavLink className={styles["main-nav-item"]} onClick={handleClick} to="/">
+                            <i className="fa fa-sign-out" ></i>
+                            Sign Out </NavLink>
+                    </>
                     :
                     <NavLink className={styles["main-nav-item"]} to="/sign-in">
                         <i className="fa fa-user-circle"></i>
