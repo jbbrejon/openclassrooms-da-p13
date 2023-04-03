@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 // Import Redux slices
-//import * as authenticatedActions from '../../features/auth/authenticatedSlice'
 import * as authActions from '../../features/auth/authSlice'
+import * as profileActions from '../../features/profile/profileSlice'
 
 // Import Redux selectors
 import { selectAuth } from '../../utils/selectors'
+
 
 // Import css module
 import styles from './signin.module.css'
@@ -23,7 +24,6 @@ function Signin() {
     const navigate = useNavigate();
 
     const auth = useSelector(selectAuth);
-    console.log(auth);
 
     // Local state to save form inputs
     const [email, setEmail] = useState("");
@@ -35,6 +35,23 @@ function Signin() {
         localStorage.setItem("token", token);
     }
 
+    // Get firstName and lastName from API
+    function getName(token) {
+        axios.post('http://localhost:3001/api/v1/user/profile', "none", {
+            headers: {
+                'authorization': `Bearer ${token}`
+            },
+        })
+            .then(function (response) {
+                dispatch(profileActions.update({ firstName: response.data.body.firstName, lastName: response.data.body.lastName }));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:3001/api/v1/user/login', {
@@ -45,6 +62,7 @@ function Signin() {
                 if (remember) {
                     setLocalStorage(response.data.body.token);
                     dispatch(authActions.signin(response.data.body.token));
+                    getName(response.data.body.token);
                     navigate("/profile");
                 }
                 else {
