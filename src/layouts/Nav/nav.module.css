@@ -43,3 +43,7 @@ i {
 .firstname {
     margin-right: 15px;
 }
+
+.navlinks {
+    display: flex;
+}
