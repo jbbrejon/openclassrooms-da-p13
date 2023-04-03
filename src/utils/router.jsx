@@ -1,5 +1,5 @@
 // Import modules
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
 
 // Import components
 import Nav from "../layouts/Nav";
@@ -12,6 +12,11 @@ import Signin from "../pages/Signin";
 import Profile from "../pages/Profile";
 import Error from "../pages/Error";
 
+
+import { useSelector } from 'react-redux';
+
+// Import Redux selectors
+import { selectAuth } from '../utils/selectors'
 
 
 // Set standard layout
@@ -33,6 +38,17 @@ const ErrorLayout = () => (
     </>
 );
 
+// Set profile route
+const ProfileRoute = () => {
+    // Get auth state
+    const auth = useSelector(selectAuth);
+    return (
+        auth.signed ? <Profile /> : <Navigate to="/sign-in" />
+    )
+
+}
+
+
 // Router configuration
 const Router = createBrowserRouter([
     {
@@ -48,7 +64,8 @@ const Router = createBrowserRouter([
         },
         {
             path: "profile",
-            element: <Profile />,
+            element: <ProfileRoute />,
+
         },]
     }
 ]);
