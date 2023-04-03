@@ -1,0 +1,50 @@
+.inputBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-edit {
+    padding: 5px;
+    margin: 0 10px;
+    width: 150px;
+    border-radius: 5px;
+    border: solid 1px rgb(192, 186, 186);
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.edit-button {
+    border-color: #00bc77;
+    background-color: #00bc77;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    margin: 0 10px 20px 10px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.save-button {
+    border-color: #3956fa;
+    background-color: #3956fa;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 5px 10px;
+    margin: 5px 10px 20px 10px;
+    width: 75px;
+}
+
+.cancel-button {
+    border-color: #f53c3c;
+    background-color: #f53c3c;
+    font-size: 12px;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 0 10px 20px 10px;
+    width: 75px;
+}
