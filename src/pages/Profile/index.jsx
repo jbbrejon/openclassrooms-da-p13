@@ -6,6 +6,7 @@ import { selectProfile } from '../../utils/selectors'
 
 // Import components
 import Account from '../../components/Account';
+import EditProfile from '../../components/EditProfile';
 
 // Import data
 import accountMock from '../../data/accountMock';
@@ -25,6 +26,7 @@ function Profile() {
                 <div className={styles.header} >
                     <h1>Welcome back<br />{profile.firstName} {profile.lastName} !</h1>
                 </div>
+                <EditProfile></EditProfile>
                 <h2 className={styles.sronly}>Accounts</h2>
                 {items}
             </main >
