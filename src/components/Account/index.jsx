@@ -1,3 +1,4 @@
+// Import css module
 import styles from './account.module.css'
 
 function Account({ title, amount, description }) {
