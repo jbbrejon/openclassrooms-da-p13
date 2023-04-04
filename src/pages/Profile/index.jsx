@@ -14,6 +14,11 @@ import accountMock from '../../data/accountMock';
 // Import css module
 import styles from './profile.module.css'
 
+/**
+ * Profile component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Profile() {
     const profile = useSelector(selectProfile);
     const items = accountMock.map((item) =>

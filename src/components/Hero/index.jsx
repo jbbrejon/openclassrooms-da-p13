@@ -1,5 +1,10 @@
 import styles from './hero.module.css'
 
+/**
+ * Hero component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Hero() {
     return (
         <>

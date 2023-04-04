@@ -10,13 +10,18 @@ import * as profileActions from '../../features/profile/profileSlice'
 // Import Redux selectors
 import { selectAuth } from '../../utils/selectors'
 
-// Import css module
-import styles from './signin.module.css'
-
 // Import API call
 import apiLogin from '../../utils/apiLogin';
 import { apiProfile } from '../../utils/apiProfile';
 
+// Import css module
+import styles from './signin.module.css'
+
+/**
+ * Signin component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Signin() {
     // Create useDispath instance
     const dispatch = useDispatch();

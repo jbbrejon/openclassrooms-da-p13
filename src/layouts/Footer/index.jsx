@@ -1,7 +1,11 @@
 // Import css module
 import styles from './footer.module.css'
 
-
+/**
+ * Footer component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Footer() {
 
     return (

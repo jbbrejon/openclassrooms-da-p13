@@ -7,6 +7,11 @@ const initialState = {
     token: null,
 }
 
+/**
+ * Auth Redux slice
+ * 
+ * @returns {object} - Redux slice
+ */
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

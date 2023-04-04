@@ -1,4 +1,4 @@
-// Mock
+// Account data (mock)
 const accountMock = [
     {
         id: 0,

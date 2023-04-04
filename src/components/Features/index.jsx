@@ -5,6 +5,11 @@ import security from '../../assets/icon-security.png'
 
 import Feature from '../Feature'
 
+/**
+ * Features component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Features() {
     return (
         <>

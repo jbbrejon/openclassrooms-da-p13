@@ -12,6 +12,13 @@ import * as profileActions from '../../features/profile/profileSlice'
 // Import css module
 import styles from './editprofile.module.css'
 
+
+/**
+ * EditProfile component.
+ *
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function EditProfile() {
     const dispatch = useDispatch()
     const profile = useSelector(selectProfile);

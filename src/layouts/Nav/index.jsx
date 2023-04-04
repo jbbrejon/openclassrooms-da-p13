@@ -9,17 +9,21 @@ import { selectAuth, selectProfile } from '../../utils/selectors'
 import * as authActions from '../../features/auth/authSlice'
 import * as profileActions from '../../features/profile/profileSlice'
 
-// Import site logo
+// Import API call
+import { apiProfile } from '../../utils/apiProfile';
+
+// Import assets
 import logo from '../../assets/argentBankLogo.png'
 
 // Import css module
 import styles from './nav.module.css'
 
-// Import API call
-import { apiProfile } from '../../utils/apiProfile';
 
-
-
+/**
+ * Nav component.
+ * 
+ * @returns {JSX.Element} - Rendered component.
+ */
 function Nav() {
 
     // Create useDispath instance
@@ -43,10 +47,6 @@ function Nav() {
         }
     }
     checkStorage()
-
-
-
-
 
     // Sign out actions
     const handleClick = () => {

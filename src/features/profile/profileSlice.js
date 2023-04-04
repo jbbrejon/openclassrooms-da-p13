@@ -5,6 +5,11 @@ const initialState = {
     lastName: null,
 }
 
+/**
+ * Profile Redux slice
+ * 
+ * @returns {object} - Redux slice
+ */
 export const profileSlice = createSlice({
     name: 'profile',
     initialState,
