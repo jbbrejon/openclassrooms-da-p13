@@ -50,3 +50,10 @@
 .bg-dark {
     background-color: #12002b;
 }
+
+.error {
+    text-align: left;
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
