@@ -28,6 +28,8 @@ function Signin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("false");
 
     // Save token to local storage (todo : set expiration)
     function setLocalStorage(token) {
@@ -38,11 +40,17 @@ function Signin() {
         e.preventDefault();
         async function getData() {
             let responseLogin = await apiLogin(email, password)
-            dispatch(authActions.signin(responseLogin.data.body.token));
-            let responseProfile = await apiProfile(responseLogin.data.body.token)
-            dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
-            if (remember) setLocalStorage(responseLogin.data.body.token);
-            navigate("/profile");
+            if (responseLogin.data.status === 200) {
+                dispatch(authActions.signin(responseLogin.data.body.token));
+                let responseProfile = await apiProfile(responseLogin.data.body.token)
+                dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
+                if (remember) setLocalStorage(responseLogin.data.body.token);
+                navigate("/profile");
+            }
+            else {
+                setMessage(responseLogin.data.message);
+                setError(true);
+            }
         }
         getData()
     }
@@ -72,6 +80,7 @@ function Signin() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
+                        {error ? <div className={styles.error}>{message}</div> : <div></div>}
                         <div className={styles["input-remember"]}>
                             <input
                                 type="checkbox"
