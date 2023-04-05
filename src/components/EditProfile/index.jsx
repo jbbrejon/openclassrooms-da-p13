@@ -9,6 +9,9 @@ import { selectAuth, selectProfile } from '../../utils/selectors'
 // Import Redux reducers
 import * as profileActions from '../../features/profile/profileSlice'
 
+// Import API call
+import { apiEditProfile } from '../../utils/apiEditProfile';
+
 // Import css module
 import styles from './editprofile.module.css'
 
@@ -26,8 +29,10 @@ function EditProfile() {
 
     // Local state (form)
     const [displayForm, setDisplayForm] = useState(false);
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [firstName, setFirstName] = useState(profile.firstName);
+    const [lastName, setLastName] = useState(profile.lastName);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("false");
 
     const handleForm = () => {
         setDisplayForm(!displayForm);
@@ -36,27 +41,20 @@ function EditProfile() {
     // Form submission actions
     const handleSubmit = () => {
         if (firstName !== "" && lastName !== "") {
-            updateName();
-            setDisplayForm(!displayForm);
+            updateData()
         }
     };
 
-    function updateName() {
-        axios.put('http://localhost:3001/api/v1/user/profile', {
-            "firstName": firstName,
-            "lastName": lastName
-        }, {
-            headers: {
-                'authorization': `Bearer ${auth.token}`
-            },
-
-        })
-            .then(function (response) {
-                dispatch(profileActions.update({ firstName: response.data.body.firstName, lastName: response.data.body.lastName }));
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    async function updateData() {
+        let responseUpdate = await apiEditProfile(auth.token, firstName, lastName)
+        if (responseUpdate.data.status === 200) {
+            dispatch(profileActions.update({ firstName: responseUpdate.data.body.firstName, lastName: responseUpdate.data.body.lastName }));
+            setDisplayForm(!displayForm);
+        }
+        else {
+            setMessage(responseUpdate.data.message);
+            setError(true);
+        }
     }
 
     return (
@@ -83,6 +81,7 @@ function EditProfile() {
                             required
                         />
                     </div>
+                    {error ? <div className={styles.error}>{message}</div> : <div></div>}
                     <div className="buttons">
                         <button className={styles["save-button"]} onClick={handleSubmit}>Save</button>
                         <button className={styles["cancel-button"]} onClick={handleForm}>Cancel</button>
