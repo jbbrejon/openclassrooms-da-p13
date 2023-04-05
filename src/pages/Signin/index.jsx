@@ -47,16 +47,26 @@ function Signin() {
         e.preventDefault();
         async function getData() {
             let responseLogin = await apiLogin(email, password)
-            if (responseLogin.data.status === 200) {
+            // Display error if API is unavailable
+            if (responseLogin.code === "ERR_NETWORK") {
+                setMessage(`${responseLogin.message}, try again later`);
+                setError(true);
+            }
+            // Update Redux state with token, firstName, lastName (option : save token to local storage)
+            else if (responseLogin.status === 200) {
                 dispatch(authActions.signin(responseLogin.data.body.token));
                 let responseProfile = await apiProfile(responseLogin.data.body.token)
                 dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
                 if (remember) setLocalStorage(responseLogin.data.body.token);
                 navigate("/profile");
             }
-            else {
-                setMessage(responseLogin.data.message);
+            // Display error if user is not found or password is incorrect
+            else if (responseLogin.response.data.status === 400) {
+                setMessage(responseLogin.response.data.message);
                 setError(true);
+            }
+            else {
+                console.err(responseLogin)
             }
         }
         getData()

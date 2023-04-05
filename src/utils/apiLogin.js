@@ -18,8 +18,7 @@ export default async function apiLogin(email, password) {
     try {
         response = await axios.post(url, { email: email, password: password });
         return response
-    } catch (e) {
-        console.error(e);
-        return e.response;
+    } catch (error) {
+        return error;
     }
 }
