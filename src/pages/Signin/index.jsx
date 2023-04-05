@@ -37,8 +37,10 @@ function Signin() {
     const [message, setMessage] = useState("false");
 
     // Save token to local storage (todo : set expiration)
-    function setLocalStorage(token) {
-        localStorage.setItem("token", token);
+    function setLocalStorage(authToken) {
+        //localStorage.setItem("token", token);
+        let auth = { token: authToken, timestamp: new Date().getTime() }
+        localStorage.setItem("auth", JSON.stringify(auth));
     }
 
     const handleSubmit = (e) => {

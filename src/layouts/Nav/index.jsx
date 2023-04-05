@@ -36,22 +36,37 @@ function Nav() {
     const profile = useSelector(selectProfile);
 
     // Get localstorage key
-    let storageToken = localStorage.getItem("token");
+    let localAuth = window.localStorage.getItem("auth");
+    localAuth = (JSON.parse(localAuth));
 
     // Get profile info if token in localStorage
     async function checkStorage() {
-        if (storageToken != null) {
-            let responseProfile = await apiProfile(storageToken)
-            dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
-            dispatch(authActions.signin(storageToken));
+        if (localAuth) {
+            // Set current timestamp
+            let currentTimestamp = new Date().getTime()
+            // Convert timestamp to Date objects
+            let localDate = new Date(localAuth.timestamp);
+            let currentDate = new Date(currentTimestamp);
+            // Calculate the difference between the two dates (in milliseconds)
+            const timeDifference = Math.abs(currentDate - localDate);
+            const isTokenExpired = timeDifference >= 24 * 60 * 60 * 1000;
+            if (!isTokenExpired) {
+                let responseProfile = await apiProfile(localAuth.token)
+                dispatch(profileActions.update({ firstName: responseProfile.data.body.firstName, lastName: responseProfile.data.body.lastName }));
+                dispatch(authActions.signin(localAuth.token));
+            }
+            else {
+                // Remove local storage
+                window.localStorage.removeItem('auth');
+            }
         }
     }
     checkStorage()
 
     // Sign out actions
     const handleClick = () => {
-        // Remove token from local storage
-        window.localStorage.removeItem('token');
+        // Remove local storage
+        window.localStorage.removeItem('auth');
         // Reset auth state
         dispatch(authActions.signout());
         dispatch(profileActions.reset());
