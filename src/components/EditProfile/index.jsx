@@ -68,7 +68,7 @@ function EditProfile() {
                             name='firstName'
                             type="text"
                             placeholder={profile.firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={(e) => setFirstName(e.target.value.trim())}
                             required
                         />
 
@@ -77,7 +77,7 @@ function EditProfile() {
                             name='lastName'
                             type="text"
                             placeholder={profile.lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            onChange={(e) => setLastName(e.target.value.trim())}
                             required
                         />
                     </div>
