@@ -33,4 +33,4 @@ Your server should now be running at http://locahost:5173
 
 ## Back-End
 
-https://github.com/jbbrejon/oc-da-p13-backend
+https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API
